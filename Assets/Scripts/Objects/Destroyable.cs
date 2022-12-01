@@ -22,6 +22,6 @@ public class Destroyable : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("(Destroyed) Object: " + gameObject.name);
+        //Debug.Log("(Destroyed) Object: " + gameObject.name);
     }
 }

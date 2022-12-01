@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6947298154935413789}
   m_Layer: 0
   m_Name: doska
-  m_TagString: Untagged
+  m_TagString: WithTag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,6 +30,7 @@ Transform:
   m_LocalRotation: {x: -0.9039333, y: 0, z: 0, w: 0.4276735}
   m_LocalPosition: {x: 3.5795944, y: 0.78, z: -0.57}
   m_LocalScale: {x: 1, y: 3, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -53,6 +54,8 @@ MonoBehaviour:
   EnemyTarget: 0
   Turrel: 0
   DestroyableObject: 0
+  HeroTarget: 0
+  Shootable: 1
 --- !u!33 &6925691301092189219
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -72,6 +75,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

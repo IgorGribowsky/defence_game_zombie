@@ -9,4 +9,6 @@ public class Tags : MonoBehaviour
     public bool EnemyTarget;
     public bool Turrel;
     public bool DestroyableObject;
+    public bool HeroTarget;
+    public bool Shootable;
 }

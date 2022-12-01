@@ -37,13 +37,21 @@ public class HeroMovement : MonoBehaviour
         get
         {
             float speed;
-            if (Input.GetKey(runKey))
+            if (RunIndicator)
                 speed = speedRun;
             else
                 speed = speedMove;
 
             if (Input.GetAxis("Vertical") != 0 && Input.GetAxis("Horizontal") != 0) speed /= (float)Math.Sqrt(2);
             return speed;
+        }
+    }
+
+    public bool RunIndicator
+    {
+        get
+        {
+            return Input.GetKey(runKey);
         }
     }
 

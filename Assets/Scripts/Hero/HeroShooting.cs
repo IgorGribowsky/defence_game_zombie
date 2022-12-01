@@ -14,6 +14,7 @@ public class HeroShooting : MonoBehaviour
     public int CurrentGunNum;
 
     private MachineGunAttributes MachineGunAttributes;
+    private HeroMovement heroMovement;
     private float spreading;
     private int ammoNumber;
     private float timeCd;
@@ -23,6 +24,7 @@ public class HeroShooting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        heroMovement = gameObject.GetComponent<HeroMovement>();
         CurrentGunNum = 0;
         SetupGun(CurrentGunNum);
     }
@@ -58,7 +60,7 @@ public class HeroShooting : MonoBehaviour
 
         if ((Input.GetKeyDown(shootKey) && !MachineGunAttributes.isAuto) || (Input.GetKey(shootKey) && MachineGunAttributes.isAuto))
         {
-            if (!cd && !reloading)
+            if (!cd && !reloading && IsHeroNotRun())
             {
                 Vector3 vec = GetComponent<HeroMovement>().LookDirection;
                 vec.y = 0;
@@ -109,5 +111,10 @@ public class HeroShooting : MonoBehaviour
             timeReloading = MachineGunAttributes.reload;
             ammoNumber = MachineGunAttributes.magazineVolume;
         }
+    }
+
+    private bool IsHeroNotRun()
+    {
+        return heroMovement == null || !heroMovement.RunIndicator;
     }
 }

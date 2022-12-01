@@ -45,16 +45,14 @@ public class BulletBehaviour : MonoBehaviour
                 return;
             }
 
-            if (tags.Wall)
-            {
-                Destroy(gameObject);
-            }
-
-            if (tags.DestroyableObject)
+            if (tags.HeroTarget)
             {
                 var healthPoints = other.GetComponent<HealthPoints>();
-                healthPoints.GetDamage(Damage);
+                healthPoints.GetDamage(Damage, Shooter);
+            }
 
+            if (tags.Shootable)
+            {
                 Destroy(gameObject);
             }
         }

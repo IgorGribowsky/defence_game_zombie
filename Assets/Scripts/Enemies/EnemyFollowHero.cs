@@ -10,7 +10,15 @@ public class EnemyFollowHero : MonoBehaviour
     public float visibleDistance = 50f;
     public float speed = 10f;
 
-    private GameObject player;
+    public GameObject TargetPlayer
+    {
+        get
+        {
+            return player;
+        }
+    }
+
+    public GameObject player;
     private NavMeshAgent agent;
 
     void Start()
@@ -21,21 +29,14 @@ public class EnemyFollowHero : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("WithTag").Where(o => o.GetComponent<Tags>().EnemyTarget).ToArray();
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("WithTag")
+            .Where(o => o.GetComponent<Tags>().EnemyTarget)
+            .Where(o => !StaticMethods.HasWallsBetween(gameObject, o))
+            .ToArray();
         if (gameObjects.Length > 0)
         {
-            float distance = Mathf.Infinity;
+            player = StaticMethods.GetNearestObject(gameObject, gameObjects, out var distance, true);
 
-            //Поиск ближайшего противника
-            foreach (GameObject o in gameObjects)
-            {
-                float curDistance = (o.transform.position - transform.position).sqrMagnitude;
-                if (curDistance < distance)
-                {
-                    player = o;
-                    distance = curDistance;
-                }
-            }
             if (distance <= visibleDistance)
             {
                 agent.isStopped = false;
@@ -46,8 +47,12 @@ public class EnemyFollowHero : MonoBehaviour
             else
             {
                 agent.isStopped = true;
+                player = null;
             }
         }
-
+        else
+        {
+            player = null;
+        }
     }
 }

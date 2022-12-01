@@ -48,24 +48,15 @@ public class EnemyMeleeAttack : MonoBehaviour
             return;
         }
 
-        float distance = Mathf.Infinity;
+        player = StaticMethods.GetNearestObject(gameObject, gameObjects, out var distance, true);
 
-        foreach (GameObject o in gameObjects)
-        {
-            float curDistance = (o.transform.position - transform.position).sqrMagnitude;
-            if (curDistance < distance)
-            {
-                player = o;
-                distance = curDistance;
-            }
-        }
         if (distance <= attackDistance)
         {
             currentAttackDuration -= Time.deltaTime;
             if (currentAttackDuration <= 0)
             {
                 var playerHP = player.GetComponent<HealthPoints>();
-                playerHP.GetDamage(damage);
+                playerHP.GetDamage(damage, gameObject);
                 cd = true;
                 currentAttackDuration = attackDuration;
             }
