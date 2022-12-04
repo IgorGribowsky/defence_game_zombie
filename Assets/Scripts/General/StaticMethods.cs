@@ -60,6 +60,6 @@ public static class GameObjectExtensions
 {
     public static bool HasTag(this GameObject obj)
     {
-        return obj.tag == "WithTag";
+        return obj.tag == UnityTags.WithTag.ToString();
     }
 } 

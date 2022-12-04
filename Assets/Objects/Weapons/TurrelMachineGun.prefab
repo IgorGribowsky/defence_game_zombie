@@ -47,7 +47,7 @@ MonoBehaviour:
   bullet: {fileID: 1724931998824428961, guid: 6fb288dbfa6c2a74eb86c4781702dc34, type: 3}
   isAuto: 1
   bulletDamage: 28
-  bulletSpeed: 60
+  bulletSpeed: 70
   bulletFlightTime: 2
   rate: 0.1
   reload: 0

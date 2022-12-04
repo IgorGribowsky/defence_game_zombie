@@ -41,7 +41,7 @@ public class TurrelShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var gameObjects = GameObject.FindGameObjectsWithTag("WithTag")
+        var gameObjects = GameObject.FindGameObjectsWithTag(UnityTags.WithTag.ToString())
             .Where(o => o.GetComponent<Tags>().HeroTarget)
             .Where(o => !StaticMethods.HasWallsBetween(gameObject, o))
             .ToArray();

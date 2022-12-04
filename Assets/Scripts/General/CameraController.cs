@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -20,36 +21,38 @@ public class CameraController : MonoBehaviour
     private float maxScopeRange;
     private float scopeShow;
 
+    private HeroShooting heroShooting;
+    private Destroyable playerDestroyable;
+    private HeroMovement heroMovement;
+
+    public float deltaTime;
     void Start()
     {
         scopeCanvas.SetActive(false);
         scopeMode = false;
+        heroShooting = Player.GetComponent<HeroShooting>();
+        playerDestroyable = Player.GetComponent<Destroyable>();
+        heroMovement = Player.GetComponent<HeroMovement>();
+
+        heroShooting.GunChanged += OnGunChangedHandler;
+        playerDestroyable.Destroyed += OnPlayerDestroyedHandler;
     }
     void Update()   
     {
-        if (IsGunWithScope())
+        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        float fps = 1.0f / deltaTime;
+        Debug.Log( Mathf.Ceil(fps).ToString());
+
+        if (Input.GetKeyDown(scopeKey) && IsGunWithScope())
         {
-            if (Input.GetKeyDown(scopeKey))
+            if (!scopeMode)
             {
-                scopeMode = !scopeMode;
-                if (scopeMode)
-                {
-                    Cursor.lockState = CursorLockMode.Locked;
-                    scopeCanvas.SetActive(true);
-                    SetupScope();
-                }
-                else
-                {
-                    Cursor.lockState = CursorLockMode.None;
-                    scopeCanvas.SetActive(false);
-                }
+                SetupScope();
             }
-        }
-        else
-        {
-            scopeMode = false;
-            Cursor.lockState = CursorLockMode.None;
-            scopeCanvas.SetActive(false);
+            else
+            {
+                ScopeOut();
+            }
         }
     }
     // Update is called once per frame
@@ -61,25 +64,37 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            Vector3 position = Player.transform.position;
+            if (Player != null)
+            {
+                Vector3 position = Player.transform.position;
 
-            position.x += horOffset;
-            position.z += -verOffset;
-            position.y += h;
+                position.x += horOffset;
+                position.z += -verOffset;
+                position.y += h;
 
-            transform.position = position;
+                transform.position = position;
+            }
         }
 
         transform.eulerAngles = new Vector3(ux, uy, uz);
     }
 
+    protected void OnGunChangedHandler(object sender, HeroShooting.GunChangedEventArgs e)
+    {
+        ScopeOut();
+    }
+
+    protected void OnPlayerDestroyedHandler(object sender, Destroyable.DestroyedEventArgs e)
+    {
+        ScopeOut();
+    }
+
     private bool IsGunWithScope()
     {
-        var shooting = Player.GetComponent<HeroShooting>();
-        if (shooting is null) return false;
-        if (shooting.Gun.Length == 0) return false;
+        if (heroShooting is null) return false;
+        if (heroShooting.Gun.Length == 0) return false;
 
-        var gun = shooting.Gun[shooting.CurrentGunNum];
+        var gun = heroShooting.Gun[heroShooting.CurrentGunNum];
 
         var attributes = gun.GetComponent<MachineGunAttributes>();
         if (attributes != null && attributes.hasScope)
@@ -88,10 +103,20 @@ public class CameraController : MonoBehaviour
         return false;
     }
 
+    private void ScopeOut()
+    {
+        scopeMode = false;
+        Cursor.lockState = CursorLockMode.None;
+        scopeCanvas.SetActive(false);
+    }
+
     private void SetupScope()
     {
-        var shooting = Player.GetComponent<HeroShooting>();
-        var gun = shooting.Gun[shooting.CurrentGunNum];
+        scopeMode = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        scopeCanvas.SetActive(true);
+
+        var gun = heroShooting.Gun[heroShooting.CurrentGunNum];
 
         var attributes = gun.GetComponent<MachineGunAttributes>();
 
@@ -118,38 +143,10 @@ public class CameraController : MonoBehaviour
         return offsetVector;
     }
 
-    private void ScopeMovementV1()
-    {
-        var delta = new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y"));
-
-        var lookPosition = transform.position - GetScopeOffset() + delta;
-        lookPosition.y = 0;
-
-        var playerPosition = Player.transform.position;
-        playerPosition.y = 0;
-
-        var rangeVector = lookPosition - playerPosition;
-        var range = Vector3.Magnitude(rangeVector);
-        if (range <= maxScopeRange)
-        {
-            transform.position += delta;
-        }
-        else
-        {
-            var fitRangeVector = rangeVector / range * maxScopeRange;
-            lookPosition = playerPosition + fitRangeVector;
-
-            lookPosition += GetScopeOffset();
-
-            transform.position = lookPosition;
-        }
-    }
-
     private void ScopeMovementV2()
     {
         var delta = new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y"));
 
-        var heroMovement = Player.GetComponent<HeroMovement>();
         var speed = heroMovement.Speed;
         var moveVector = heroMovement.MoveVector;
         var deltaMovement = moveVector * speed * Time.deltaTime;

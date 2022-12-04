@@ -22,6 +22,20 @@ public class Destroyable : MonoBehaviour
 
     private void OnDestroy()
     {
+        OnDamaged(new DestroyedEventArgs());
         //Debug.Log("(Destroyed) Object: " + gameObject.name);
+    }
+
+    public delegate void DestroyedHandler(object sender, DestroyedEventArgs e);
+
+    public event DestroyedHandler Destroyed;
+
+    protected void OnDamaged(DestroyedEventArgs e)
+    {
+        Destroyed?.Invoke(this, e);
+    }
+
+    public class DestroyedEventArgs
+    {
     }
 }

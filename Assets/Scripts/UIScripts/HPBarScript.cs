@@ -37,31 +37,20 @@ public class HPBarScript : MonoBehaviour
             isBarActive = false;
             maxHpBar.SetActive(false);
             currentHpBar.SetActive(false);
-            healthPoints.Damaged += OnDamagedHandler;
         }
+
+        healthPoints.Damaged += OnDamagedHandler;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!IsUnit || isBarActive)
+        if (isBarActive && IsUnit)
         {
-            var percent = healthPoints.CurrentHP / healthPoints.MaximumHP;
-
-            var currentHpBarScale = currentHpBar.transform.localScale;
-
-            var newCurrentHpBarScale = new Vector3(percent, currentHpBarScale.y, currentHpBarScale.z);
-
-            currentHpBar.gameObject.transform.localScale = newCurrentHpBarScale;
-
-            if (IsUnit)
-            {
-                transform.LookAt(transform.position + Camera.main.transform.forward);
-            }
+            transform.LookAt(transform.position + Camera.main.transform.forward);
         }
-
     }
-    private void OnDamagedHandler(object sender, DamagedEventArgs e)
+    private void OnDamagedHandler(object sender, HealthPoints.DamagedEventArgs e)
     {
         if (!isBarActive)
         {
@@ -69,5 +58,19 @@ public class HPBarScript : MonoBehaviour
             maxHpBar.SetActive(true);
             currentHpBar.SetActive(true);
         }
+
+        var percent = healthPoints.CurrentHP / healthPoints.MaximumHP;
+        if (percent < 0)
+        {
+            percent = 0;
+        }
+
+        var currentHpBarScale = currentHpBar.transform.localScale;
+
+        var newHpBarScale = new Vector3(percent, currentHpBarScale.y, currentHpBarScale.z);
+
+
+        currentHpBar.gameObject.transform.localScale = newHpBarScale;
+
     }
 }

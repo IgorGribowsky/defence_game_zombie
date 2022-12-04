@@ -22,7 +22,6 @@ public class HealthPoints : MonoBehaviour
     {
         Damaged?.Invoke(this, e);
     }
-}
 
     public class DamagedEventArgs
     {
@@ -30,3 +29,4 @@ public class HealthPoints : MonoBehaviour
 
         public GameObject Source { get; set; }
     }
+}

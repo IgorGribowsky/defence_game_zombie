@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - WithTag
+  - EnemyMovePoint
+  - EnemySpawnPoint
   layers:
   - Default
   - TransparentFX

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1923593363427625673}
   - component: {fileID: -773680194833416152}
   m_Layer: 0
-  m_Name: AK74M
+  m_Name: MP-40
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,17 +46,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 1724931998824428961, guid: 6fb288dbfa6c2a74eb86c4781702dc34, type: 3}
   isAuto: 1
-  bulletDamage: 34
-  bulletSpeed: 70
+  bulletDamage: 24
+  bulletSpeed: 50
   bulletFlightTime: 2
   rate: 0.1
-  reload: 3
-  magazineVolume: 30
+  reload: 2.5
+  magazineVolume: 40
   isSpreaded: 1
-  maximalSpreading: 16
-  minimalSpreading: 3
-  relaxTime: 1
-  timeToMaximalSpreading: 0.5
-  hasScope: 0
-  scopeRange: 10
+  maximalSpreading: 12
+  minimalSpreading: 2
+  relaxTime: 1.8
+  timeToMaximalSpreading: 1.4
+  hasScope: 1
+  scopeRange: 20
   scopeShow: 1

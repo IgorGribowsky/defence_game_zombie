@@ -1,5 +1,13 @@
 using UnityEngine;
 
+enum UnityTags
+{
+    WithTag,
+    EnemySpawnPoint,
+    EnemyMovePoint
+}
+
+
 public class Tags : MonoBehaviour
 {
     public bool Wall;

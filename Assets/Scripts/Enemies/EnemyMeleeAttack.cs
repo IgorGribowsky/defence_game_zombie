@@ -39,7 +39,7 @@ public class EnemyMeleeAttack : MonoBehaviour
             return;
         }
 
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("WithTag")
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(UnityTags.WithTag.ToString())
             .Where(o => o.GetComponent<Tags>().EnemyTarget)
             .ToArray();
 

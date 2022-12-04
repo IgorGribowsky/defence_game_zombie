@@ -7,18 +7,18 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public int currentPointIndex;
-    public float speed = 10f;
-    public List<Vector3> points;
-    public bool reverse = false;
-    public bool loop = false;
+    public int CurrentPointIndex = 0;
+    public float Speed = 10f;
+    public List<Vector3> Points;
+    public bool Reverse = false;
+    public bool Loop = false;
     public float acceptanceDistance = 3f;
 
     private NavMeshAgent agent;
 
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         GoToCurrentPoint();
@@ -27,49 +27,56 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var currentPoint = points[currentPointIndex];
+        var currentPoint = Points[CurrentPointIndex];
         float curDistance = (transform.position - currentPoint).sqrMagnitude;
         if (curDistance < acceptanceDistance)
         {
-            var change = reverse ? -1 : +1;
-            currentPointIndex += change;
-            if (currentPointIndex >= points.Count)
+            var tempCurrentPointIndex = CurrentPointIndex;
+
+            var change = Reverse ? -1 : +1;
+            CurrentPointIndex += change;
+            if (CurrentPointIndex >= Points.Count)
             {
-                if (loop)
+                if (Loop)
                 {
-                    currentPointIndex = 0;
+                    CurrentPointIndex = 0;
                 }
                 else
                 {
-                    currentPointIndex = points.Count - 1;
+                    CurrentPointIndex = Points.Count - 1;
                     return;
                 }
             }
 
-            if (currentPointIndex < 0)
+            if (CurrentPointIndex < 0)
             {
-                if (loop)
+                if (Loop)
                 {
-                    currentPointIndex = points.Count - 1;
+                    CurrentPointIndex = Points.Count - 1;
                 }
                 else
                 {
-                    currentPointIndex = 0;
+                    CurrentPointIndex = 0;
                     return;
                 }
             }
-
             GoToCurrentPoint();
+
+            OnCameToPoint(new CameToPointEventArgs()
+            {
+                PointNumber = CurrentPointIndex,
+                PointPosition = currentPoint,
+            });
         }
     }
 
     public void GoToCurrentPoint()
     {
-        var currentPoint = points[currentPointIndex];
+        var currentPoint = Points[CurrentPointIndex];
         if (currentPoint != null)
         {
             agent.isStopped = false;
-            agent.speed = speed;
+            agent.speed = Speed;
             agent.avoidancePriority = 100;
             agent.SetDestination(currentPoint);
         }
@@ -84,4 +91,24 @@ public class EnemyMovement : MonoBehaviour
     {
         agent.isStopped = false;
     }
+
+    #region Came To Point Event
+
+    public delegate void CameToPointHandler(object sender, CameToPointEventArgs e);
+
+    public event CameToPointHandler CameToPoint;
+
+    protected void OnCameToPoint(CameToPointEventArgs e)
+    {
+        CameToPoint?.Invoke(this, e);
+    }
+
+    public class CameToPointEventArgs
+    {
+        public int PointNumber { get; set; }
+
+        public Vector3 PointPosition { get; set; }
+    }
+
+    #endregion
 }

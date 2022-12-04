@@ -118,6 +118,8 @@ GameObject:
   - component: {fileID: 6070567998160906932}
   - component: {fileID: 6070567998160906935}
   - component: {fileID: 6070567998160906831}
+  - component: {fileID: -6860793699143045370}
+  - component: {fileID: -3306679515365184123}
   - component: {fileID: 6070567998160906828}
   - component: {fileID: 6070567998160906934}
   m_Layer: 0
@@ -260,12 +262,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6070567998160906929}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b0ddc734bc36f342bd96763a5a39af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visibleDistance: 250
   speed: 8
   player: {fileID: 0}
 --- !u!114 &6070567998160906831
@@ -280,16 +281,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d7ccc2a78886c43b65ddd391ae5554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPointIndex: 0
-  speed: 6
-  points:
-  - {x: 10, y: 0, z: 10}
-  - {x: -10, y: 0, z: 10}
-  - {x: -10, y: 0, z: -10}
-  - {x: 10, y: 0, z: -10}
-  reverse: 0
-  loop: 0
-  acceptanceDistance: 1
+  CurrentPointIndex: 0
+  Speed: 2
+  Points: []
+  Reverse: 0
+  Loop: 0
+  acceptanceDistance: 10
+--- !u!114 &-6860793699143045370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6070567998160906929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b586296f43d552544be2a08ca6f0ccb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 2
+  Rate: 3
+  StepDistance: 2
+  EndlessChilling: 0
+  ChillingPhaseDuration: 30
+  RandomChillingPhaseDuration: 1
+  MaxChillingPhaseDuration: 40
+  MinChillingPhaseDuration: 10
+  currentChillingTime: 0
+--- !u!114 &-3306679515365184123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6070567998160906929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b9635c93864ac348bcfc73916cdc629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeroNoticeDistance: 250
+  HeroMissingTime: 1
+  ChillProbability: 0.5
 --- !u!114 &6070567998160906828
 MonoBehaviour:
   m_ObjectHideFlags: 0

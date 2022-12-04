@@ -49,6 +49,13 @@ public class HeroShooting : MonoBehaviour
             CurrentGunNum -= 1;
             if (CurrentGunNum < 0) CurrentGunNum = Gun.Length - 1;
             SetupGun(CurrentGunNum);
+
+            OnGunChanged(new GunChangedEventArgs 
+            { 
+                Gun = Gun[CurrentGunNum],
+                GunNumber = CurrentGunNum,
+                HasChangedOnNextGun = false
+            });
         }
 
         if (Input.GetKeyDown(nextGun))
@@ -56,6 +63,13 @@ public class HeroShooting : MonoBehaviour
             CurrentGunNum += 1;
             if (CurrentGunNum > Gun.Length - 1) CurrentGunNum = 0;
             SetupGun(CurrentGunNum);
+
+            OnGunChanged(new GunChangedEventArgs
+            {
+                Gun = Gun[CurrentGunNum],
+                GunNumber = CurrentGunNum,
+                HasChangedOnNextGun = true
+            });
         }
 
         if ((Input.GetKeyDown(shootKey) && !MachineGunAttributes.isAuto) || (Input.GetKey(shootKey) && MachineGunAttributes.isAuto))
@@ -116,5 +130,23 @@ public class HeroShooting : MonoBehaviour
     private bool IsHeroNotRun()
     {
         return heroMovement == null || !heroMovement.RunIndicator;
+    }
+
+    public delegate void GunChangedHandler(object sender, GunChangedEventArgs e);
+
+    public event GunChangedHandler GunChanged;
+
+    protected void OnGunChanged(GunChangedEventArgs e)
+    {
+        GunChanged?.Invoke(this, e);
+    }
+
+    public class GunChangedEventArgs
+    {
+        public GameObject Gun { get; set; }
+
+        public int GunNumber { get; set; }
+
+        public bool HasChangedOnNextGun { get; set; }
     }
 }
