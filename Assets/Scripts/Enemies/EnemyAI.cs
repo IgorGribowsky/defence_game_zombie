@@ -9,22 +9,22 @@ public class EnemyAI : MonoBehaviour
     public float HeroMissingTime;
     public float ChillProbability;
 
+    public EnemyFollowHero FindHeroBehaviour;
+    public EnemyMovement PatrolBehaviour;
+    public EnemyChill ChillingBehaviour;
+    public EnemyMeleeAttack AttackBehaviour;
+
     private float heroCurrentMissingTime;
 
-    private EnemyFollowHero FindHeroBehaviour;
-    private EnemyMovement PatrolBehaviour;
-    private EnemyChill ChillingBehaviour;
-
     private bool wasChilling;
-
-    private NavMeshAgent NavMeshAgent;
+    public GameObject[] gos;
     // Start is called before the first frame update
     void Start()
     {
         FindHeroBehaviour = GetComponent<EnemyFollowHero>();
         PatrolBehaviour = GetComponent<EnemyMovement>();
         ChillingBehaviour = GetComponent<EnemyChill>();
-        NavMeshAgent = GetComponent<NavMeshAgent>();
+        AttackBehaviour = GetComponent<EnemyMeleeAttack>();
 
         PatrolBehaviour.enabled = true;
         FindHeroBehaviour.enabled = false;
@@ -35,16 +35,26 @@ public class EnemyAI : MonoBehaviour
 
         ChillingBehaviour.ChillingEnded += OnChillingEndedHandler;
         PatrolBehaviour.CameToPoint += OnCameToPointHandler;
+
+        gos = GameObject.FindGameObjectsWithTag(UnityTags.WithTag.ToString())
+        .Where(o => o.GetComponent<Tags>().EnemyTarget)
+        .ToArray();
     }
 
     // Update is called once per frame
     void Update()
     {
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(UnityTags.WithTag.ToString())
-            .Where(o => o.GetComponent<Tags>().EnemyTarget)
-            .Where(o => !StaticMethods.HasWallsBetween(gameObject, o))
-            .ToArray();
-        if (gameObjects.Length > 0)
+        if (FindHeroBehaviour.enabled && heroCurrentMissingTime < 0)
+        {
+            RejectPersecution();
+        }
+        //GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(UnityTags.WithTag.ToString())
+        //    .Where(o => o.GetComponent<Tags>().EnemyTarget)
+        //    .Where(o => !StaticMethods.HasWallsBetween(gameObject, o))
+        //    .ToArray();
+        var gameObjects = gos.Where(o => !StaticMethods.HasWallsBetween(gameObject, o)).ToArray();
+        //GameObject[] gameObjects = new GameObject[0];
+        if (gameObjects.Count() > 0)
         {
             var player = StaticMethods.GetNearestObject(gameObject, gameObjects, out var distance, true);
             heroCurrentMissingTime = HeroMissingTime;
@@ -55,23 +65,17 @@ public class EnemyAI : MonoBehaviour
                 FindHeroBehaviour.enabled = true;
 
                 FindHeroBehaviour.player = player;
+                AttackBehaviour.Attack(player, distance);
             }
             else
             {
                 RejectPersecution();
             }
         }
-        else if (FindHeroBehaviour.player != null)
+        else if (FindHeroBehaviour.enabled)
         {
             heroCurrentMissingTime -= Time.deltaTime;
-            if (heroCurrentMissingTime <= 0)
-            {
-                RejectPersecution();
-            }
-        }
-        else if (FindHeroBehaviour.player == null)
-        {
-            RejectPersecution();
+
         }
     }
 

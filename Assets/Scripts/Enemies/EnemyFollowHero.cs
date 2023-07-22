@@ -32,10 +32,13 @@ public class EnemyFollowHero : MonoBehaviour
 
         //    if (distance <= visibleDistance)
         //    {
-        agent.isStopped = false;
-                agent.speed = speed;
-                agent.avoidancePriority = (int)Math.Ceiling(Vector3.Distance(player.transform.position, gameObject.transform.position) * 10);
-                agent.SetDestination(player.transform.position);
+        if (player != null)
+        {
+            agent.isStopped = false;
+            agent.speed = speed;
+            agent.avoidancePriority = (int)Math.Ceiling(Vector3.Distance(player.transform.position, gameObject.transform.position) * 10);
+            agent.SetDestination(player.transform.position);
+        }
         //    }
         //    else
         //    {

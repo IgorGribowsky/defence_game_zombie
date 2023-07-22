@@ -25,7 +25,6 @@ public class CameraController : MonoBehaviour
     private Destroyable playerDestroyable;
     private HeroMovement heroMovement;
 
-    public float deltaTime;
     void Start()
     {
         scopeCanvas.SetActive(false);
@@ -39,10 +38,6 @@ public class CameraController : MonoBehaviour
     }
     void Update()   
     {
-        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        float fps = 1.0f / deltaTime;
-        Debug.Log( Mathf.Ceil(fps).ToString());
-
         if (Input.GetKeyDown(scopeKey) && IsGunWithScope())
         {
             if (!scopeMode)

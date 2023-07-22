@@ -8,7 +8,7 @@ using static UnityEditor.Progress;
 
 public static class StaticMethods
 {
-    public static GameObject GetNearestObject(GameObject destGameObject, GameObject[] gameObjects, out float distance, bool ignoreHeight = false)
+    public static GameObject GetNearestObject(GameObject destGameObject, IEnumerable<GameObject> gameObjects, out float distance, bool ignoreHeight = false)
     {
         distance = Mathf.Infinity;
         GameObject nearestObject = null;
@@ -36,6 +36,19 @@ public static class StaticMethods
         }
 
         return nearestObject;
+    }
+
+    public static float GetDistance(GameObject obj1, GameObject obj2, bool ignoreHeight = false)
+    {
+        var pos1 = obj1.transform.position;
+        var pos2 = obj2.transform.position;
+        if (ignoreHeight)
+        {
+            pos1.y = 0f;
+            pos2.y = 0f;
+        }
+
+        return (pos1 - pos2).sqrMagnitude; ;
     }
 
     public static bool HasWallsBetween(GameObject o1, GameObject o2)

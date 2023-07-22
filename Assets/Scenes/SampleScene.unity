@@ -4463,7 +4463,6 @@ MonoBehaviour:
   rightRotateKey: 0
   scopeKey: 324
   scopeCanvas: {fileID: 176104830}
-  deltaTime: 0
 --- !u!4 &969436608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2066360036394375588, guid: 42568fff0e17a494488cab37a14418eb, type: 3}
@@ -5072,7 +5071,7 @@ GameObject:
   - component: {fileID: 1263817111}
   - component: {fileID: 1263817112}
   m_Layer: 0
-  m_Name: EnemySpawner
+  m_Name: EnemySpawner_LoadTesting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5102,16 +5101,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1263817110}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 851f39a2d7dabcd4e85bec2113c2628f, type: 3}
+  m_Script: {fileID: 11500000, guid: 82ece9f53b3d3f44e8f812ad981a4df8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rate: 30
-  CountOfMovePointsToAdd: 60
+  Rate: 1
+  CountOfMovePointsToAdd: 20
   EnemiesList:
   - Enemy: {fileID: 6070567998160906929, guid: be76c48b368ae2245825412cc3f11365, type: 3}
-    Count: 2
+    Count: 1
   - Enemy: {fileID: 6070567998160906929, guid: c0d74e25b9943904aae0a3c5bb535c25, type: 3}
-    Count: 5
+    Count: 4
+  deltaTime: 0
+  Waves: 10
+  WaveNum: 0
 --- !u!4 &1275126080 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2066360036394375588, guid: 42568fff0e17a494488cab37a14418eb, type: 3}

@@ -27,29 +27,48 @@ public class EnemyMeleeAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timeCd <= 0)
-        {
-            cd = false;
-            timeCd = rate;
-        }
-
         if (cd)
         {
             timeCd -= Time.deltaTime;
+            if (timeCd <= 0)
+            {
+                cd = false;
+                timeCd = rate;
+            }
             return;
         }
 
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(UnityTags.WithTag.ToString())
-            .Where(o => o.GetComponent<Tags>().EnemyTarget)
-            .ToArray();
+        //GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(UnityTags.WithTag.ToString())
+        //    .Where(o => o.GetComponent<Tags>().EnemyTarget)
+        //    .ToArray();
+        //GameObject[] gameObjects = new GameObject[0];
 
-        if (gameObjects.Length <= 0)
-        {
-            return;
-        }
+        //if (gameObjects.Length <= 0)
+        //{
+        //    return;
+        //}
 
-        player = StaticMethods.GetNearestObject(gameObject, gameObjects, out var distance, true);
+        //player = StaticMethods.GetNearestObject(gameObject, gameObjects, out var distance, true);
 
+        //if (distance <= attackDistance)
+        //{
+        //    currentAttackDuration -= Time.deltaTime;
+        //    if (currentAttackDuration <= 0)
+        //    {
+        //        var playerHP = player.GetComponent<HealthPoints>();
+        //        playerHP.GetDamage(damage, gameObject);
+        //        cd = true;
+        //        currentAttackDuration = attackDuration;
+        //    }
+        //}
+        //else
+        //{
+        //    currentAttackDuration = attackDuration;
+        //}
+    }
+
+    public void Attack(GameObject player, float distance)
+    {
         if (distance <= attackDistance)
         {
             currentAttackDuration -= Time.deltaTime;
